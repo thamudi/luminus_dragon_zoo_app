@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dragons</title>
+</head>
+<body>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+<form action="." method="get">
+    {% csrf_token %}
+    <input name="input-query-name" type="text" placeholder="Search your dragon">
+    <input type="submit" value="Search">
+</form>
+<table>
+    <thead>
+    <tr>
+        <td>
+            Name
+        </td>
+        <td>
+            Location
+        </td>
+        <td>
+            Age
+        </td>
+        <td>
+            Fav Food
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+        {% for dragon in dragons %}
+        <tr>
+            <td>{{ dragon.name }}</td>
+            <td>{{ dragon.location }}</td>
+            <td>{{ dragon.age }}</td>
+            <td>{{ dragon.fav_food }}</td>
+            <td><a href="edit/{{ dragon.id }}"> Edit</a></td>
+            <td>
+                <form method="post" action="{% url 'delete' dragon.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value="delete">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="create">
+    create new dragon
+</a>
+</body>
+</html>
